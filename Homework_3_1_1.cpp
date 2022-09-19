@@ -2,7 +2,7 @@
 #include <iostream>
 
 int* readArray(std::ifstream& inFile, int& size);
-void writeArray(std::ofstream& outFile, int size, int* array);
+void writeArrayWithShift(std::ofstream& outFile, int size, int* array, int shift);
 
 int main() {
 
@@ -23,8 +23,8 @@ int main() {
         int size2 = 0;
         int* array2 = readArray(inFile, size2);
 
-        writeArray(outFile, size2, array2);
-        writeArray(outFile, size1, array1);
+        writeArrayWithShift(outFile, size2, array2,-1);
+        writeArrayWithShift(outFile, size1, array1,1);
 
         delete[] array1;
         array1 = nullptr;
@@ -55,10 +55,10 @@ int* readArray(std::ifstream& inFile, int& size) {
     return array;
 }
 
-void writeArray(std::ofstream& outFile, int size, int* array) {
+void writeArrayWithShift(std::ofstream& outFile, int size, int* array, int shift) {
     outFile << size << std::endl;
     for (int i = 0; i < size; i++) {
-        outFile << array[size - i - 1] << " ";
+        outFile << array[(((i+shift)>=0)&&((i+shift<size)))?(i+shift):((i+shift)>=size?(shift+i-size):(size+shift+i))] << " ";
     }
     outFile << std::endl;
 }
